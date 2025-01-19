@@ -15,6 +15,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
+  // validates user presence with given credentials
   async validateUser(username: string, loginPassword: string): Promise<any | null> {
     const user = await this.userModel.findOne({ email: username }).exec()
 
@@ -42,6 +43,7 @@ export class AuthService {
 
 }
 
+  //manages the creation of access/refresh tokens after user login validation
   async login(user: any) {
     
     const payload = {
@@ -51,7 +53,8 @@ export class AuthService {
 
     const { accessToken, accessTokenExpiry, refreshToken } = await this.getTokens(payload);
 
-    await this.updateRefreshToken(refreshToken, user.id);
+    // update the user refresh token field for future verification
+    await this.updateRefreshToken(refreshToken, user.id); 
 
     return {
       accessToken,
@@ -64,6 +67,7 @@ export class AuthService {
     return await this.userModel.findByIdAndUpdate(id, { refreshToken: refreshToken}, { new: true }).exec()
   }
 
+  // common function to generate access and refresh tokens for a given payload
   async getTokens(payload: any) {
 
     const accessToken = await this.jwtService.signAsync(payload);
@@ -87,16 +91,17 @@ export class AuthService {
     };
   }
 
+  //register user 
   async registerUser(createUserDto: CreateUserDto) {
     try {
 
       const hasFoundEmail = await this.userModel.findOne({ email: createUserDto.email }).exec()
 
-      if(hasFoundEmail) {
+      if(hasFoundEmail) { // only unique email records are valid
           throw new BadRequestException('Please use a different email to register')  
       }
       
-      const hash = await this.hashData(createUserDto.password);
+      const hash = await this.hashData(createUserDto.password); // hash password for security
       createUserDto.password = hash
       createUserDto.status = 1
       const createdUser = new this.userModel(createUserDto);
@@ -108,6 +113,7 @@ export class AuthService {
     } 
   }
 
+  // update access token using a refresh token to extend user session
   async refreshUserTokens(userData: any) {
     try {
         const user = await this.userModel.findById(userData.sub).exec()
