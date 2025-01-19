@@ -13,6 +13,7 @@ export class TasksService {
     private taskModel: Model<TaskDocument>,
   ) {}
 
+  //create a task for the token bearer
   async create(createTaskDto: CreateTaskDto, user: any) {
     try {
       createTaskDto.status = 1;
@@ -26,6 +27,7 @@ export class TasksService {
     }
   }
 
+  // find all the tasks associated with the token bearer
   async findAll(user: any) {
    try {
 
@@ -40,6 +42,7 @@ export class TasksService {
    }
   }
 
+  // find a task associated with the token bearer
   async findOne(id: string, user: any) {
     try {
       const task = await this.taskModel.findOne({
@@ -58,6 +61,7 @@ export class TasksService {
     }
   }
 
+  // update any task by id whic is associated with the token bearer
   async update(id: string, user: any, updateTaskDto: UpdateTaskDto) {
    try {
 
@@ -79,6 +83,7 @@ export class TasksService {
    }
   }
 
+   // delete any task by id whic is associated with the token bearer
   async remove(id: string, user: any) {
    try {
 
@@ -100,6 +105,7 @@ export class TasksService {
    }
   }
 
+  // generate analytics for the token bearer using an aggregation pipe
   async generateAnalytics(user: any) {
     try {
 
