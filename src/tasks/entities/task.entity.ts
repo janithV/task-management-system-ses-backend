@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
-import { User } from 'src/users/entities/user.entity';
+import { User } from '../../users/entities/user.entity';
 
 export type TaskDocument = Task & Document;
 

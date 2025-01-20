@@ -3,9 +3,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, BadRequestException,
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
-import { GetCurrentUser } from 'src/common/decorators/get-current-user.decorator';
+import { GetCurrentUser } from '../common/decorators/get-current-user.decorator';
 import { FailedResponse, SuccessResponse } from 'src/common/types/response-types';
-import { Query as ExpressQuery } from 'express-serve-static-core';
 
 @Controller('api/tasks')
 export class TasksController {
