@@ -1,10 +1,11 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Get, Post, Body, Patch, Param, Delete, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, BadRequestException, Query } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { GetCurrentUser } from 'src/common/decorators/get-current-user.decorator';
 import { FailedResponse, SuccessResponse } from 'src/common/types/response-types';
+import { Query as ExpressQuery } from 'express-serve-static-core';
 
 @Controller('api/tasks')
 export class TasksController {
@@ -36,9 +37,10 @@ export class TasksController {
   }
 
   @Get()
-  async findAll(@GetCurrentUser() user: string) {
+  async findAll(@GetCurrentUser() user: string, @Query('filter') filter?: number) {
     try {
-      const records = await this.tasksService.findAll(user);
+ 
+      const records = await this.tasksService.findAll(user, +filter);
 
       const successPayload: SuccessResponse = {
         statusCode: 200,
