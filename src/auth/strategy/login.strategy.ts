@@ -4,6 +4,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from '../auth.service';
 
+// strat responsible for validating if actually a user is present from given credentials
 @Injectable()
 export class LoginStrategy extends PassportStrategy(Strategy) {
   constructor(private authService: AuthService) {
