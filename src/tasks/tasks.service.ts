@@ -28,12 +28,18 @@ export class TasksService {
   }
 
   // find all the tasks associated with the token bearer
-  async findAll(user: any) {
+  async findAll(user: any, filter?: number) {
    try {
 
-    const records = await this.taskModel.find({
-      user: user.sub
-    }).exec()
+    const query: any = { user: user.sub };
+
+    if (filter && [1, 2, 3].includes(filter)) {    
+      query.status = filter; // Filter by status
+    }
+
+    const sortOptions = filter === 4 ? { dueDate: 1 as mongoose.SortOrder } : {};
+
+    const records = await this.taskModel.find(query).sort(sortOptions).exec()
 
     return records
     
